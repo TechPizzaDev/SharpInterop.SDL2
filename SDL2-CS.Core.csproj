@@ -14,6 +14,9 @@
 		<Copyright>Copyright 2013-2022</Copyright>
 		<Tags>SDL2# SDL2 SDL</Tags>
 		<PackageLicenseFile>LICENSE</PackageLicenseFile>
+		<IncludeSymbols>true</IncludeSymbols>
+		<SymbolPackageFormat>snupkg</SymbolPackageFormat>
+		<GeneratePackageOnBuild>false</GeneratePackageOnBuild>
 	</PropertyGroup>
 	
 	<PropertyGroup>
@@ -40,6 +43,7 @@
 		
 		<None Include="LICENSE">
 			<Pack>True</Pack>
+			<PackagePath></PackagePath>
 		</None>
 	</ItemGroup>
 </Project>
