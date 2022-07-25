@@ -31,7 +31,7 @@ using System;
 using System.Runtime.InteropServices;
 #endregion
 
-namespace SDL2
+namespace SharpInterop.SDL2
 {
 	public static class SDL_mixer
 	{
@@ -203,14 +203,22 @@ namespace SDL2
 		private static extern unsafe IntPtr INTERNAL_Mix_LoadMUS(
 			byte* file
 		);
-		public static unsafe IntPtr Mix_LoadMUS(string file)
+		public static unsafe IntPtr Mix_LoadMUS(ReadOnlySpan<char> file)
 		{
-			byte* utf8File = SDL.Utf8EncodeHeap(file);
-			IntPtr handle = INTERNAL_Mix_LoadMUS(
-				utf8File
-			);
-			Marshal.FreeHGlobal((IntPtr) utf8File);
-			return handle;
+			byte* buffer1 = stackalloc byte[SDL.StackBufferSize];
+			byte* utf8File = SDL.Utf8EncodeHeap(file, buffer1, SDL.StackBufferSize, out byte* allocation1, out _);
+
+			try
+			{
+				IntPtr handle = INTERNAL_Mix_LoadMUS(
+					utf8File
+				);
+				return handle;
+			}
+			finally
+			{
+				NativeMemory.Free(allocation1);
+			}
 		}
 
 		/* IntPtr refers to a Mix_Chunk* */
@@ -577,14 +585,22 @@ namespace SDL2
 		private static extern unsafe int INTERNAL_Mix_SetMusicCMD(
 			byte* command
 		);
-		public static unsafe int Mix_SetMusicCMD(string command)
+		public static unsafe int Mix_SetMusicCMD(ReadOnlySpan<char> command)
 		{
-			byte* utf8Cmd = SDL.Utf8EncodeHeap(command);
-			int result = INTERNAL_Mix_SetMusicCMD(
-				utf8Cmd
-			);
-			Marshal.FreeHGlobal((IntPtr) utf8Cmd);
-			return result;
+			byte* buffer1 = stackalloc byte[SDL.StackBufferSize];
+			byte* utf8Cmd = SDL.Utf8EncodeHeap(command, buffer1, SDL.StackBufferSize, out byte* allocation1, out _);
+
+			try
+			{
+				int result = INTERNAL_Mix_SetMusicCMD(
+					utf8Cmd
+				);
+				return result;
+			}
+			finally
+			{
+				NativeMemory.Free(allocation1);
+			}
 		}
 
 		[DllImport(nativeLibName, CallingConvention = CallingConvention.Cdecl)]
@@ -597,14 +613,22 @@ namespace SDL2
 		private static extern unsafe int INTERNAL_Mix_SetSoundFonts(
 			byte* paths
 		);
-		public static unsafe int Mix_SetSoundFonts(string paths)
+		public static unsafe int Mix_SetSoundFonts(ReadOnlySpan<char> paths)
 		{
-			byte* utf8Paths = SDL.Utf8EncodeHeap(paths);
-			int result = INTERNAL_Mix_SetSoundFonts(
-				utf8Paths
-			);
-			Marshal.FreeHGlobal((IntPtr) utf8Paths);
-			return result;
+			byte* buffer1 = stackalloc byte[SDL.StackBufferSize];
+			byte* utf8Paths = SDL.Utf8EncodeHeap(paths, buffer1, SDL.StackBufferSize, out byte* allocation1, out _);
+
+			try
+			{
+				int result = INTERNAL_Mix_SetSoundFonts(
+					utf8Paths
+				);
+				return result;
+			}
+			finally
+			{
+				NativeMemory.Free(allocation1);
+			}
 		}
 
 		[DllImport(nativeLibName, EntryPoint = "Mix_GetSoundFonts", CallingConvention = CallingConvention.Cdecl)]
@@ -651,7 +675,7 @@ namespace SDL2
 			return SDL.SDL_GetError();
 		}
 
-		public static void Mix_SetError(string fmtAndArglist)
+		public static void Mix_SetError(ReadOnlySpan<char> fmtAndArglist)
 		{
 			SDL.SDL_SetError(fmtAndArglist);
 		}

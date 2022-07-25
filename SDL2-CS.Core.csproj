@@ -1,12 +1,12 @@
 <Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
-		<TargetFrameworks>net40;netstandard2.0</TargetFrameworks>
+		<TargetFrameworks>net6.0</TargetFrameworks>
 		<Platforms>x64</Platforms>
 	</PropertyGroup>
 	<PropertyGroup>
 		<EnableDefaultItems>false</EnableDefaultItems>
-		<AssemblyName>SDL2-CS</AssemblyName>
-		<RootNamespace>SDL2</RootNamespace>
+		<AssemblyName>SharpInterop.SDL2</AssemblyName>
+		<RootNamespace>SharpInterop.SDL2</RootNamespace>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
 	</PropertyGroup>
@@ -19,6 +19,7 @@
 		<Message Importance="High" Text="Loaded property overrides from '$(SDLSettingsPropsFilePath)'" Condition="Exists('$(SDLSettingsPropsFilePath)')" />
 	</Target>	
 	<ItemGroup>
+		<Compile Include="GlobalSuppressions.cs" />
 		<Compile Include="src\SDL2.cs" />
 		<Compile Include="src\SDL2_gfx.cs" />
 		<Compile Include="src\SDL2_image.cs" />

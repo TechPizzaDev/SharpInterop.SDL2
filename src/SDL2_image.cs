@@ -31,7 +31,7 @@ using System;
 using System.Runtime.InteropServices;
 #endregion
 
-namespace SDL2
+namespace SharpInterop.SDL2
 {
 	public static class SDL_image
 	{
@@ -94,12 +94,20 @@ namespace SDL2
 		);
 		public static unsafe IntPtr IMG_Load(string file)
 		{
-			byte* utf8File = SDL.Utf8EncodeHeap(file);
-			IntPtr handle = INTERNAL_IMG_Load(
-				utf8File
-			);
-			Marshal.FreeHGlobal((IntPtr) utf8File);
-			return handle;
+			byte* buffer1 = stackalloc byte[SDL.StackBufferSize];
+			byte* utf8File = SDL.Utf8EncodeHeap(file, buffer1, SDL.StackBufferSize, out byte* allocation1, out _);
+
+			try
+			{
+				IntPtr handle = INTERNAL_IMG_Load(
+					utf8File
+				);
+				return handle;
+			}
+			finally
+			{
+				NativeMemory.Free(allocation1);
+			}
 		}
 
 		/* src refers to an SDL_RWops*, IntPtr to an SDL_Surface* */
@@ -121,15 +129,24 @@ namespace SDL2
 		public static unsafe IntPtr IMG_LoadTyped_RW(
 			IntPtr src,
 			int freesrc,
-			string type
-		) {
-			int utf8TypeBufSize = SDL.Utf8Size(type);
-			byte* utf8Type = stackalloc byte[utf8TypeBufSize];
-			return INTERNAL_IMG_LoadTyped_RW(
-				src,
-				freesrc,
-				SDL.Utf8Encode(type, utf8Type, utf8TypeBufSize)
-			);
+			ReadOnlySpan<char> type
+		)
+		{
+			byte* buffer1 = stackalloc byte[SDL.StackBufferSize];
+			byte* utf8Type = SDL.Utf8EncodeHeap(type, buffer1, SDL.StackBufferSize, out byte* allocation1, out _);
+
+			try
+			{
+				return INTERNAL_IMG_LoadTyped_RW(
+					src,
+					freesrc,
+					utf8Type
+				);
+			}
+			finally
+			{
+				NativeMemory.Free(allocation1);
+			}
 		}
 
 		/* IntPtr refers to an SDL_Texture*, renderer to an SDL_Renderer* */
@@ -140,15 +157,24 @@ namespace SDL2
 		);
 		public static unsafe IntPtr IMG_LoadTexture(
 			IntPtr renderer,
-			string file
-		) {
-			byte* utf8File = SDL.Utf8EncodeHeap(file);
-			IntPtr handle = INTERNAL_IMG_LoadTexture(
-				renderer,
-				utf8File
-			);
-			Marshal.FreeHGlobal((IntPtr) utf8File);
-			return handle;
+			ReadOnlySpan<char> file
+		)
+		{
+			byte* buffer1 = stackalloc byte[SDL.StackBufferSize];
+			byte* utf8File = SDL.Utf8EncodeHeap(file, buffer1, SDL.StackBufferSize, out byte* allocation1, out _);
+
+			try
+			{
+				IntPtr handle = INTERNAL_IMG_LoadTexture(
+					renderer,
+					utf8File
+				);
+				return handle;
+			}
+			finally
+			{
+				NativeMemory.Free(allocation1);
+			}
 		}
 
 		/* renderer refers to an SDL_Renderer*.
@@ -179,17 +205,26 @@ namespace SDL2
 			IntPtr renderer,
 			IntPtr src,
 			int freesrc,
-			string type
-		) {
-			byte* utf8Type = SDL.Utf8EncodeHeap(type);
-			IntPtr handle = INTERNAL_IMG_LoadTextureTyped_RW(
-				renderer,
-				src,
-				freesrc,
-				utf8Type
-			);
-			Marshal.FreeHGlobal((IntPtr) utf8Type);
-			return handle;
+			ReadOnlySpan<char> type
+		)
+		{
+			byte* buffer1 = stackalloc byte[SDL.StackBufferSize];
+			byte* utf8Type = SDL.Utf8EncodeHeap(type, buffer1, SDL.StackBufferSize, out byte* allocation1, out _);
+
+			try
+			{
+				IntPtr handle = INTERNAL_IMG_LoadTextureTyped_RW(
+					renderer,
+					src,
+					freesrc,
+					utf8Type
+				);
+				return handle;
+			}
+			finally
+			{
+				NativeMemory.Free(allocation1);
+			}
 		}
 
 		/* IntPtr refers to an SDL_Surface* */
@@ -205,15 +240,23 @@ namespace SDL2
 			IntPtr surface,
 			byte* file
 		);
-		public static unsafe int IMG_SavePNG(IntPtr surface, string file)
+		public static unsafe int IMG_SavePNG(IntPtr surface, ReadOnlySpan<char> file)
 		{
-			byte* utf8File = SDL.Utf8EncodeHeap(file);
-			int result = INTERNAL_IMG_SavePNG(
-				surface,
-				utf8File
-			);
-			Marshal.FreeHGlobal((IntPtr) utf8File);
-			return result;
+			byte* buffer1 = stackalloc byte[SDL.StackBufferSize];
+			byte* utf8File = SDL.Utf8EncodeHeap(file, buffer1, SDL.StackBufferSize, out byte* allocation1, out _);
+
+			try
+			{
+				int result = INTERNAL_IMG_SavePNG(
+					surface,
+					utf8File
+				);
+				return result;
+			}
+			finally
+			{
+				NativeMemory.Free(allocation1);
+			}
 		}
 
 		/* surface refers to an SDL_Surface*, dst to an SDL_RWops* */
@@ -234,14 +277,22 @@ namespace SDL2
 		);
 		public static unsafe int IMG_SaveJPG(IntPtr surface, string file, int quality)
 		{
-			byte* utf8File = SDL.Utf8EncodeHeap(file);
-			int result = INTERNAL_IMG_SaveJPG(
-				surface,
-				utf8File,
-				quality
-			);
-			Marshal.FreeHGlobal((IntPtr) utf8File);
-			return result;
+			byte* buffer1 = stackalloc byte[SDL.StackBufferSize];
+			byte* utf8File = SDL.Utf8EncodeHeap(file, buffer1, SDL.StackBufferSize, out byte* allocation1, out _);
+
+			try
+			{
+				int result = INTERNAL_IMG_SaveJPG(
+					surface,
+					utf8File,
+					quality
+				);
+				return result;
+			}
+			finally
+			{
+				NativeMemory.Free(allocation1);
+			}
 		}
 
 		/* surface refers to an SDL_Surface*, dst to an SDL_RWops* */
