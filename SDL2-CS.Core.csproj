@@ -1,23 +1,31 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 	<PropertyGroup>
 		<TargetFrameworks>net6.0</TargetFrameworks>
-		<Platforms>x64</Platforms>
-	</PropertyGroup>
-	<PropertyGroup>
 		<EnableDefaultItems>false</EnableDefaultItems>
 		<AssemblyName>SharpInterop.SDL2</AssemblyName>
 		<RootNamespace>SharpInterop.SDL2</RootNamespace>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 		<GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+		<Version>2.24.0-beta1</Version>
+		<Authors>flibitijibibo;TechPizza</Authors>
+		<RepositoryUrl>https://github.com/TechPizzaDev/SharpInterop.SDL2</RepositoryUrl>
+		<RepositoryType>git</RepositoryType>
+		<Description>C# Wrapper for SDL2</Description>
+		<Copyright>Copyright 2013-2022</Copyright>
+		<Tags>SDL2# SDL2 SDL</Tags>
+		<PackageLicenseFile>LICENSE</PackageLicenseFile>
 	</PropertyGroup>
+	
 	<PropertyGroup>
 		<SDLSettingsPropsFilePath>$(SolutionDir)SDL2-CS.Settings.props</SDLSettingsPropsFilePath>
 	</PropertyGroup>
+	
 	<Import Project="$(SDLSettingsPropsFilePath)" Condition="Exists('$(SDLSettingsPropsFilePath)')" />
 	<Target Name="ValidatePropsFilePath" BeforeTargets="BeforeBuild">
 		<Message Importance="High" Text="No property overrides found at '$(SDLSettingsPropsFilePath)'" Condition="!Exists('$(SDLSettingsPropsFilePath)')" />
 		<Message Importance="High" Text="Loaded property overrides from '$(SDLSettingsPropsFilePath)'" Condition="Exists('$(SDLSettingsPropsFilePath)')" />
 	</Target>	
+	
 	<ItemGroup>
 		<Compile Include="GlobalSuppressions.cs" />
 		<Compile Include="src\SDL2.cs" />
@@ -26,7 +34,12 @@
 		<Compile Include="src\SDL2_mixer.cs" />
 		<Compile Include="src\SDL2_ttf.cs" />
 	</ItemGroup>
+	
 	<ItemGroup>
 		<None Include="app.config" />
+		
+		<None Include="LICENSE">
+			<Pack>True</Pack>
+		</None>
 	</ItemGroup>
 </Project>
