@@ -1,6 +1,6 @@
-This is SDL2#, a C# wrapper for SDL2.
+This is a fork of SDL2#, a C# wrapper for SDL2.
 
-Project Website: https://github.com/flibitijibibo/SDL2-CS
+Original Project: https://github.com/flibitijibibo/SDL2-CS
 
 License
 -------
